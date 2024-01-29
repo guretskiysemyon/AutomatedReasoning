@@ -1,0 +1,23 @@
+Package: apache
+Depends: java|c,apt|c
+
+
+Package: apt
+Depends: elad
+
+Package: elad
+Conflicts: c
+
+Package: c
+Conflicts: spring
+
+Package: spring
+Conflicts: c
+
+Package: java
+Depends: Ruby
+
+Package: Ruby
+Depends: apt
+
+Install: apache
