@@ -59,7 +59,7 @@ def check_clauses_naive(cnf, binary_string):
 
 
 
-   
+### TO DO: Change Naive implementation!!!!!!!!!
 
 # input cnf: a formula
 # input n_vars: the number of variables in the formula
