@@ -2,7 +2,7 @@
 
 # Automated Reasoning Course Projects
 
-Welcome to the repository containing my projects for the "Automated Reasoning" course I took during our studies at university.
+Welcome to the repository containing my projects for the "Automated Reasoning" course I took during our with [Lior](https://github.com/lagron1000) studies at university.
 
 Throughout this course, we delved into various algorithms and worked with the `pysmt` module, solving reasoning problems programmatically.
 
