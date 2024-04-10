@@ -202,7 +202,7 @@ def uf_solver(cube):
     # check negative constraints
     res = negative_literals(uf, data["neq"], data["core"])
     if not res:
-        return False, minimum_core(data["core"])
+        return False, data["core"]
 
     return True, None
 
@@ -221,6 +221,15 @@ def main():
     # read path from input
 
     path = sys.argv[1]
+    
+    
+    try:
+        core_size = sys.argv[2]
+    except Exception:
+        # Code to handle the exception
+        core_size = ""
+
+        
     with open(path, "r") as f:
         smtlib = f.read()
 
@@ -240,6 +249,8 @@ def main():
     else:
         print("unsat")
         print("-----")
+        if core_size == "min":
+            core = minimum_core(core)
         print("\n".join([str(x) for x in core]))
 
 

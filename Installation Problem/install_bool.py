@@ -4,7 +4,7 @@ import os
 
 
 
-
+# Function that remove all whitespaces from string
 def strong_strip(string):
     res = ""
     for x in string:
@@ -14,6 +14,7 @@ def strong_strip(string):
     return res
 
 
+# Function that parse file and create needed data stractures.
 def parse_package_file(file_path):
     package_data = {}
     install_list = set()
@@ -38,7 +39,9 @@ def parse_package_file(file_path):
     return package_data, install_list
 
 
-
+# This function check if there is already vvariable created for
+# this symbol and if it is function return this variable, otherwise
+# create new one and return it.
 def get_variable(v_name):
     t = variables_dic.get(v_name)
     if t:
@@ -50,12 +53,15 @@ def get_variable(v_name):
 
 
 
+# This function creates logical expression by then method
+# decribed in read.me. The main purpose of this function given line of 
+# "or" and "and" to create list with the object Or, And from pysmt.
 def create_expression(dep_line):
     dep_line = dep_line.split(',')
     formulaes = []
     for x in dep_line:
         if  '|' in x:
-            vars = x.split('|') # May be can be more
+            vars = x.split('|') # May be more
             queue_install.update(vars)
             ors = []
             for y in vars:
@@ -69,6 +75,7 @@ def create_expression(dep_line):
 
 
 
+# Creates formulas of dependencies and comnflict one after another.
 def install_package(package_name):
 
     package_data = package_dictionary.pop(package_name)
@@ -86,7 +93,6 @@ def install_package(package_name):
 
 
     formulaes = create_expression(conflict)
-    ex = Or(formulaes) # OR
     expr = Implies(get_variable(package_name) , Not(Or(formulaes)))
     assertions.append(expr)
     solver.add_assertion(expr)
@@ -95,7 +101,7 @@ def install_package(package_name):
 
 
 
-
+# Print the instalation plan if there is one.
 def print_instalation_program():
     for var, symbol in variables_dic.items():
         if solver.get_value(symbol) == TRUE():
@@ -107,7 +113,9 @@ def print_instalation_program():
 
 
 
-    
+# Create a variable for install packages.
+# After that for every   every package that we have to install
+# function call create expression function and continues in recursive way.
 def preprocessing():
     for x in queue_install:
         var_x = Symbol(x, BOOL)
@@ -126,8 +134,6 @@ def preprocessing():
         else:
             get_variable(current_package)    
 
-# for x in assertions:
-#     print(x)
 
 
 
@@ -145,7 +151,6 @@ if not os.path.exists(filename):
 
 solver = Solver(name="z3")
 
-# path = 'ex1.dep'
 
 # Dictionary from parsering the file and list of needed instalations.
 package_dictionary, queue_install  = parse_package_file(filename)
@@ -159,27 +164,6 @@ assertions = []
 
 preprocessing()
 
-# for x in queue_install:
-#     var_x = Symbol(x, BOOL)
-#     variables_dic[x] = var_x
-#     solver.add_assertion(var_x)
-#     assertions.append(x)
-
-
-# while len(queue_install) != 0:
-#     current_package = queue_install.pop()
-#     if current_package in completed_packages:
-#         continue
-
-#     if current_package in package_dictionary:
-#         install_package(current_package)
-#     else:
-#         get_variable(current_package)
-    
-
-
-# for x in assertions:
-#     print(x)
 
 
 res = solver.check_sat()
